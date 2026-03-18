@@ -9,7 +9,7 @@
   // ========================================
   
   const CONFIG = {
-    N8N_WEBHOOK: 'https://florganics.app.n8n.cloud/webhook-test/webhook/customer-message',
+    N8N_WEBHOOK: 'https://florganics.app.n8n.cloud/webhook/customer-message',
     SUPABASE_URL: 'https://kksbbpaspjeltqfwgknk.supabase.co',
     SUPABASE_ANON_KEY: 'sb_publishable_PQ0uqs7VkTeL6A6Pa3Lzcg_gz1fDPWI',
     API_URL: 'https://your-backend.com', // Später: dein Backend URL
