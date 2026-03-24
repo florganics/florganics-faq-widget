@@ -1,7 +1,7 @@
 (function() {
   console.log("🍃 Flora Widget: Initialisierung...");
 
-  // 1. Styles & Fonts (Barlow Condensed für den Florganics-Look)
+  // 1. Styles & Fonts (Barlow Condensed)
   const style = document.createElement('style');
   style.innerHTML = `
     @import url('https://fonts.googleapis.com');
@@ -15,11 +15,16 @@
   `;
   document.head.appendChild(style);
 
-  // 2. n8n Chat Bibliothek laden
+  // 2. n8n Chat Bibliothek & Styles laden (VOLLSTÄNDIGE LINKS)
   const script = document.createElement('script');
   script.type = 'module';
-  script.src = 'https://cdn.jsdelivr.net';
-  document.head.appendChild(style);
+  script.src = 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+  
+  const chatStyle = document.createElement('link');
+  chatStyle.rel = 'stylesheet';
+  chatStyle.href = 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css';
+  
+  document.head.appendChild(chatStyle);
   document.body.appendChild(script);
 
   // 3. Auth Formular erstellen
@@ -37,11 +42,11 @@
   `;
   document.body.appendChild(authDiv);
 
-  // 4. n8n Chat Initialisierung
+  // 4. n8n Chat Initialisierung (VOLLSTÄNDIGE URL)
   function startFlora(name, email) {
     if (window.Chat) {
       window.Chat.createChat({
-        webhookUrl: 'https://florganics.app.n8n.cloud',
+        webhookUrl: 'https://florganics.app.n8n.cloud/webhook/ea3e051f-a6f2-45a7-a72e-ffc23aa96e43/chat',
         title: 'Flora 🍃 Florganics Expertin',
         welcomeMessage: `Hallo ${name}! Schön, dass du da bist! Baust du schon lange an?`,
         backgroundColor: '#01450F',
@@ -51,13 +56,13 @@
     }
   }
 
-  // Session Management
+  // Session Management & Lade-Check
   script.onload = () => {
     const sEmail = localStorage.getItem('flo_chat_email');
     const sName = localStorage.getItem('flo_chat_name');
 
     if (sEmail && sName) {
-      startFlora(sName, sEmail);
+      setTimeout(() => startFlora(sName, sEmail), 500);
     } else {
       authDiv.style.display = 'block';
       document.getElementById('flo-start').addEventListener('click', () => {
@@ -69,7 +74,7 @@
           authDiv.style.display = 'none';
           startFlora(name, email);
         } else {
-          alert("Bitte Name und E-Mail eingeben, damit Flora dich richtig beraten kann.");
+          alert("Bitte Name und E-Mail eingeben.");
         }
       });
     }
