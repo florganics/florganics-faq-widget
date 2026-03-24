@@ -43,9 +43,10 @@
   document.body.appendChild(authDiv);
 
   // 4. n8n Chat Initialisierung (VOLLSTÄNDIGE URL)
-  function startFlora(name, email) {
-    if (window.Chat) {
-      window.Chat.createChat({
+  async function startFlora(name, email) {
+    try {
+      const { createChat } = await import('https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js');
+      createChat({
         webhookUrl: 'https://florganics.app.n8n.cloud/webhook/ea3e051f-a6f2-45a7-a72e-ffc23aa96e43/chat',
         title: 'Flora 🍃 Florganics Expertin',
         welcomeMessage: `Hallo ${name}! Schön, dass du da bist! Baust du schon lange an?`,
