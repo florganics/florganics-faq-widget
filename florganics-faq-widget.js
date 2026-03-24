@@ -4,7 +4,7 @@
   // 1. Styles & Fonts (Barlow Condensed)
   const style = document.createElement('style');
   style.innerHTML = `
-    @import url('https://fonts.googleapis.com');
+    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&display=swap');
     :root { --flo-green: #01450F; --flo-text: #2D2926; --flo-font: 'Barlow Condensed', sans-serif; }
     #flo-auth { position: fixed; bottom: 20px; right: 20px; width: 350px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); font-family: var(--flo-font); z-index: 2147483647; overflow: hidden; border: 1px solid #eee; }
     .flo-header { background: var(--flo-green); color: white; padding: 15px; font-weight: 600; font-size: 22px; text-align: center; text-transform: uppercase; }
