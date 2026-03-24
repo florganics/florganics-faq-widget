@@ -53,6 +53,13 @@
         mainColor: '#ffffff',
         metadata: { userId: email, userName: name }
       });
+
+      // ENTSCHEIDEND: Erst wenn createChat ohne Fehler lief, blenden wir das Formular aus
+      document.getElementById('flo-auth').style.display = 'none';
+      console.log("✅ Flora ist bereit!");
+
+    } catch (error) {
+      console.error("❌ Fehler beim Laden der Chat-Maschine:", error);
     }
   }
 
@@ -71,7 +78,7 @@
         if (name && email) {
           localStorage.setItem('flo_chat_email', email);
           localStorage.setItem('flo_chat_name', name);
-          authDiv.style.display = 'none';
+          // Hier rufen wir die Funktion auf – das .style.display = 'none' haben wir oben in die Funktion verschoben!
           startFlora(name, email);
         } else {
           alert("Bitte Name und E-Mail eingeben.");
