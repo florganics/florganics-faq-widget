@@ -57,22 +57,32 @@
         mainColor: '#ffffff',
         metadata: { userId: email, userName: name },
         showChatButton: false // Versteckt den pinken n8n-Button
-});
+})
 
-// Der Zündschlüssel: Kurze Pause für das CSS, dann aufklappen
-setTimeout(() => { 
-  floraChat.toggle(true); 
-  console.log("🚀 Flora wurde aktiv geöffnet!");
-}, 200);
+// 1. Sicherstellen, dass das Chat-Fenster nach kurzer Verzögerung öffnet
+        setTimeout(() => {
+            if (floraChat && typeof floraChat.toggle === 'function') {
+                floraChat.toggle(true);
+                console.log("🚀 Flora wurde aktiv geöffnet!");
+            }
+        }, 200);
 
-// Weißes Formular ausblenden
-      document.getElementById('flo-auth').style.display = 'none';
-      console.log("✅ Flora ist bereit!");
+        // 2. Robustes Ausblenden des Formulars (Prüfung, ob Element existiert)
+        const authElement = document.getElementById('flo-auth');
+        if (authElement) {
+            authElement.style.display = 'none';
+            console.log("✅ Auth-Formular ausgeblendet.");
+        } else {
+            console.warn("⚠️ Element '#flo-auth' nicht gefunden. Chat wurde dennoch gestartet.");
+        }
+
+        console.log("✅ Flora ist bereit!");
 
     } catch (error) {
-      console.error("❌ Fehler beim Laden der Chat-Maschine:", error);
+        // 3. Detailliertes Error-Handling für den Import oder die Initialisierung
+        console.error("❌ Fehler beim Laden der Chat-Maschine:", error.message);
     }
-  }
+}
 
   // Session Management & Lade-Check
   script.onload = () => {
