@@ -12,6 +12,9 @@
     .flo-input { padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: var(--flo-font); font-size: 16px; color: var(--flo-text); }
     .flo-btn { background: var(--flo-green); color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-family: var(--flo-font); font-size: 18px; font-weight: 600; transition: opacity 0.2s; }
     .flo-btn:hover { opacity: 0.9; }
+        /* Flora Z-Index Fix: Zwingt das Fenster nach ganz vorne */
+    .n8n-chat-widget { z-index: 2147483647 !important; }
+    .n8n-chat-widget-window { z-index: 2147483647 !important; bottom: 20px !important; right: 20px !important; }
   `;
   document.head.appendChild(style);
 
@@ -46,14 +49,24 @@
   async function startFlora(name, email) {
     try {
       const { createChat } = await import('https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js');
-      createChat({
+      const floraChat = createChat({
         webhookUrl: 'https://florganics.app.n8n.cloud/webhook/ea3e051f-a6f2-45a7-a72e-ffc23aa96e43/chat',
         title: 'Flora 🍃 Florganics Expertin',
         welcomeMessage: `Hallo ${name}! Schön, dass du da bist! Baust du schon lange an?`,
         backgroundColor: '#01450F',
         mainColor: '#ffffff',
-        metadata: { userId: email, userName: name }
-      });
+        metadata: { userId: email, userName: name },
+        showChatButton: false // Versteckt den pinken n8n-Button
+});
+
+// Der Zündschlüssel: Kurze Pause für das CSS, dann aufklappen
+setTimeout(() => { 
+  floraChat.toggle(true); 
+  console.log("🚀 Flora wurde aktiv geöffnet!");
+}, 200);
+
+// Weißes Formular ausblenden
+document.getElementById('flo-auth').style.display = 'none';      });
 
       // ENTSCHEIDEND: Erst wenn createChat ohne Fehler lief, blenden wir das Formular aus
       document.getElementById('flo-auth').style.display = 'none';
