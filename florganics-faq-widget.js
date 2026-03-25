@@ -66,9 +66,6 @@ setTimeout(() => {
 }, 200);
 
 // Weißes Formular ausblenden
-document.getElementById('flo-auth').style.display = 'none';      });
-
-      // ENTSCHEIDEND: Erst wenn createChat ohne Fehler lief, blenden wir das Formular aus
       document.getElementById('flo-auth').style.display = 'none';
       console.log("✅ Flora ist bereit!");
 
