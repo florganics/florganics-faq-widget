@@ -13,9 +13,15 @@
     .flo-btn { background: var(--flo-green); color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-family: var(--flo-font); font-size: 18px; font-weight: 600; transition: opacity 0.2s; }
     .flo-btn:hover { opacity: 0.9; }
         /* Flora Z-Index Fix: Zwingt das Fenster nach ganz vorne */
-    .n8n-chat-widget { z-index: 2147483647 !important; }
-    .n8n-chat-widget-window { z-index: 2147483647 !important; bottom: 20px !important; right: 20px !important; }
-  `;
+    .n8n-chat-widget { 
+    --n8n-chat-primary-color: #01450F !important; 
+    --n8n-chat-background-color: #01450F !important; 
+}
+/* Das stellt sicher, dass das Fenster über allem anderen liegt */
+div[class^="chat-window"], .n8n-chat-widget-window { 
+    z-index: 2147483647 !important; 
+} 
+`;
   document.head.appendChild(style);
 
   // 2. n8n Chat Bibliothek & Styles laden (VOLLSTÄNDIGE LINKS)
@@ -61,11 +67,21 @@
 
 // 1. Sicherstellen, dass das Chat-Fenster nach kurzer Verzögerung öffnet
         setTimeout(() => {
-            if (floraChat && typeof floraChat.toggle === 'function') {
-                floraChat.toggle(true);
-                console.log("🚀 Flora wurde aktiv geöffnet!");
-            }
-        }, 200);
+    // 1. Versuche es über die offizielle Methode
+    if (floraChat && typeof floraChat.toggle === 'function') {
+        floraChat.toggle(true);
+    } else {
+        // 2. Fallback: Falls die Methode fehlt, klicke den Button im Hintergrund
+        const n8nButton = document.querySelector('.n8n-chat-widget button');
+        if (n8nButton) n8nButton.click();
+    }
+    
+    // Formular ausblenden
+    const authElement = document.getElementById('flo-auth');
+    if (authElement) authElement.style.display = 'none';
+    
+    console.log("🚀 Flora wurde gestartet!");
+}, 500);
 
         // 2. Robustes Ausblenden des Formulars (Prüfung, ob Element existiert)
         const authElement = document.getElementById('flo-auth');
