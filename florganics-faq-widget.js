@@ -56,7 +56,7 @@ div[class^="chat-window"], .n8n-chat-widget-window {
     try {
       const { createChat } = await import('https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js');
       const floraChat = createChat({
-        webhookUrl: 'https://florganics.app.n8n.cloud/webhook/ea3e051f-a6f2-45a7-a72e-ffc23aa96e43/chat',
+        webhookUrl: 'https://florganics.app.n8n.cloud/webhook/207ed328-e8e9-4700-aed0-43a2b267660e/chat',
         title: 'Flora 🍃 Florganics Expertin',
         welcomeMessage: `Hallo ${name}! Schön, dass du da bist! Baust du schon lange an?`,
         backgroundColor: '#01450F',
