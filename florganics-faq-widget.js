@@ -1,42 +1,92 @@
 (function() {
-  console.log("🍃 Flora Widget: Initialisierung...");
+  console.log("🍃 Flora Widget: Initialisierung (Optimierte Shopify-Version)...");
 
-  // 1. Styles & Fonts (Barlow Condensed)
+  // 1. Styles & Fonts (Barlow Condensed & Z-Index Fix)
   const style = document.createElement('style');
   style.innerHTML = `
-    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&display=swap');
-    :root { --flo-green: #01450F; --flo-text: #2D2926; --flo-font: 'Barlow Condensed', sans-serif; }
-    #flo-auth { position: fixed; bottom: 20px; right: 20px; width: 350px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); font-family: var(--flo-font); z-index: 2147483647; overflow: hidden; border: 1px solid #eee; }
-    .flo-header { background: var(--flo-green); color: white; padding: 15px; font-weight: 600; font-size: 22px; text-align: center; text-transform: uppercase; }
-    .flo-body { padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-    .flo-input { padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: var(--flo-font); font-size: 16px; color: var(--flo-text); }
-    .flo-btn { background: var(--flo-green); color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-family: var(--flo-font); font-size: 18px; font-weight: 600; transition: opacity 0.2s; }
+    @import url('https://fonts.googleapis.com');
+    
+    :root { 
+      --flo-green: #01450F; 
+      --flo-text: #2D2926; 
+      --flo-font: 'Barlow Condensed', sans-serif; 
+    }
+
+    #flo-auth { 
+      position: fixed; 
+      bottom: 20px; 
+      right: 20px; 
+      width: 350px; 
+      background: white; 
+      border-radius: 12px; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+      font-family: var(--flo-font); 
+      z-index: 2147483647; 
+      overflow: hidden; 
+      border: 1px solid #eee; 
+    }
+
+    .flo-header { 
+      background: var(--flo-green); 
+      color: white; 
+      padding: 15px; 
+      font-weight: 600; 
+      font-size: 22px; 
+      text-align: center; 
+      text-transform: uppercase; 
+    }
+
+    .flo-body { 
+      padding: 20px; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 15px; 
+    }
+
+    .flo-input { 
+      padding: 12px; 
+      border: 1px solid #ddd; 
+      border-radius: 4px; 
+      font-family: var(--flo-font); 
+      font-size: 16px; 
+      color: var(--flo-text); 
+    }
+
+    .flo-btn { 
+      background: var(--flo-green); 
+      color: white; 
+      border: none; 
+      padding: 12px; 
+      border-radius: 4px; 
+      cursor: pointer; 
+      font-family: var(--flo-font); 
+      font-size: 18px; 
+      font-weight: 600; 
+      transition: opacity 0.2s; 
+    }
+
     .flo-btn:hover { opacity: 0.9; }
-        /* Flora Z-Index Fix: Zwingt das Fenster nach ganz vorne */
-    .n8n-chat-widget { 
-    --n8n-chat-primary-color: #01450F !important; 
-    --n8n-chat-background-color: #01450F !important; 
-}
-/* Das stellt sicher, dass das Fenster über allem anderen liegt */
-div[class^="chat-window"], .n8n-chat-widget-window { 
-    z-index: 2147483647 !important; 
-} 
-`;
+    
+    /* n8n Chat Widget Design & Positionierung */
+    #n8n-chat-widget { 
+      --n8n-chat-primary-color: #01450F !important; 
+      z-index: 2147483647 !important; 
+    }
+    .n8n-chat-widget-window { 
+      z-index: 2147483647 !important; 
+      bottom: 20px !important; 
+      right: 20px !important; 
+    }
+  `;
   document.head.appendChild(style);
 
-  // 2. n8n Chat Bibliothek & Styles laden (VOLLSTÄNDIGE LINKS)
-  const script = document.createElement('script');
-  script.type = 'module';
-  script.src = 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
-  
+  // 2. n8n Styles (Wichtig für das Aussehen des Chats)
   const chatStyle = document.createElement('link');
   chatStyle.rel = 'stylesheet';
-  chatStyle.href = 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css';
-  
+  chatStyle.href = 'https://cdn.jsdelivr.net';
   document.head.appendChild(chatStyle);
-  document.body.appendChild(script);
 
-  // 3. Auth Formular erstellen
+  // 3. Das Anmelde-Formular (Auth Div)
   const authDiv = document.createElement('div');
   authDiv.id = 'flo-auth';
   authDiv.style.display = 'none';
@@ -51,76 +101,68 @@ div[class^="chat-window"], .n8n-chat-widget-window {
   `;
   document.body.appendChild(authDiv);
 
-  // 4. n8n Chat Initialisierung (VOLLSTÄNDIGE URL)
-  async function startFlora(name, email) {
-    try {
-      const { createChat } = await import('https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js');
-      const floraChat = createChat({
-        webhookUrl: 'https://florganics.app.n8n.cloud/webhook/207ed328-e8e9-4700-aed0-43a2b267660e/chat',
-        title: 'Flora 🍃 Florganics Expertin',
-        welcomeMessage: `Hallo ${name}! Schön, dass du da bist! Baust du schon lange an?`,
-        backgroundColor: '#01450F',
-        mainColor: '#ffffff',
-        metadata: { userId: email, userName: name },
-        showChatButton: false // Versteckt den pinken n8n-Button
-})
-
-// 1. Sicherstellen, dass das Chat-Fenster nach kurzer Verzögerung öffnet
-        setTimeout(() => {
-    // 1. Versuche es über die offizielle Methode
-    if (floraChat && typeof floraChat.toggle === 'function') {
-        floraChat.toggle(true);
+  // 4. Stabile Initialisierung (Wartet auf Bibliothek)
+  function initFloraChat(name, email) {
+    if (window.n8nChat) {
+      launchChat(name, email);
     } else {
-        // 2. Fallback: Falls die Methode fehlt, klicke den Button im Hintergrund
-        const n8nButton = document.querySelector('.n8n-chat-widget button');
-        if (n8nButton) n8nButton.click();
+      // Bibliothek asynchron laden (Sicher für Shopify Performance)
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net';
+      script.onload = () => launchChat(name, email);
+      document.body.appendChild(script);
     }
-    
-    // Formular ausblenden
-    const authElement = document.getElementById('flo-auth');
-    if (authElement) authElement.style.display = 'none';
-    
-    console.log("🚀 Flora wurde gestartet!");
-}, 500);
+  }
 
-        // 2. Robustes Ausblenden des Formulars (Prüfung, ob Element existiert)
-        const authElement = document.getElementById('flo-auth');
-        if (authElement) {
-            authElement.style.display = 'none';
-            console.log("✅ Auth-Formular ausgeblendet.");
-        } else {
-            console.warn("⚠️ Element '#flo-auth' nicht gefunden. Chat wurde dennoch gestartet.");
-        }
+  function launchChat(name, email) {
+    // Chat erstellen
+    window.n8nChat.createChat({
+      webhookUrl: 'https://florganics.app.n8n.cloud',
+      title: 'Flora 🍃 Florganics Expertin',
+      welcomeMessage: `Hallo ${name}! Schön, dass du da bist! Baust du schon lange an?`,
+      backgroundColor: '#01450F',
+      mainColor: '#ffffff',
+      metadata: { userId: email, userName: name },
+      showChatButton: false
+    });
 
-        console.log("✅ Flora ist bereit!");
+    // Kurz warten, bis n8n das DOM-Element erzeugt hat, dann öffnen
+    setTimeout(() => {
+      const chatButton = document.querySelector('.n8n-chat-widget button');
+      if (chatButton) {
+          chatButton.click();
+          authDiv.style.display = 'none';
+          console.log("🚀 Flora erfolgreich gestartet!");
+      } else {
+          // Fallback: Falls Button nicht gefunden, Fenster manuell einblenden
+          const n8nWrapper = document.querySelector('.n8n-chat-widget');
+          if (n8nWrapper) n8nWrapper.classList.add('n8n-chat-widget-open');
+          authDiv.style.display = 'none';
+      }
+    }, 600);
+  }
 
-    } catch (error) {
-        // 3. Detailliertes Error-Handling für den Import oder die Initialisierung
-        console.error("❌ Fehler beim Laden der Chat-Maschine:", error.message);
-    }
-}
+  // 5. Session Management (Erkennt wiederkehrende Nutzer)
+  const savedEmail = localStorage.getItem('flo_chat_email');
+  const savedName = localStorage.getItem('flo_chat_name');
 
-  // Session Management & Lade-Check
-  script.onload = () => {
-    const sEmail = localStorage.getItem('flo_chat_email');
-    const sName = localStorage.getItem('flo_chat_name');
-
-    if (sEmail && sName) {
-      setTimeout(() => startFlora(sName, sEmail), 500);
-    } else {
-      authDiv.style.display = 'block';
-      document.getElementById('flo-start').addEventListener('click', () => {
-        const name = document.getElementById('flo-name').value;
-        const email = document.getElementById('flo-email').value;
-        if (name && email) {
-          localStorage.setItem('flo_chat_email', email);
-          localStorage.setItem('flo_chat_name', name);
-          // Hier rufen wir die Funktion auf – das .style.display = 'none' haben wir oben in die Funktion verschoben!
-          startFlora(name, email);
-        } else {
-          alert("Bitte Name und E-Mail eingeben.");
-        }
-      });
-    }
-  };
+  if (savedEmail && savedName) {
+    // User bekannt -> Chat direkt laden (aber Fenster bleibt zu, bis n8n bereit ist)
+    initFloraChat(savedName, savedEmail);
+  } else {
+    // User unbekannt -> Formular zeigen
+    authDiv.style.display = 'block';
+    document.getElementById('flo-start').addEventListener('click', () => {
+      const nameInput = document.getElementById('flo-name').value.trim();
+      const emailInput = document.getElementById('flo-email').value.trim();
+      
+      if (nameInput && emailInput) {
+        localStorage.setItem('flo_chat_email', emailInput);
+        localStorage.setItem('flo_chat_name', nameInput);
+        initFloraChat(nameInput, emailInput);
+      } else {
+        alert("Bitte gib deinen Namen und deine E-Mail-Adresse ein.");
+      }
+    });
+  }
 })();
